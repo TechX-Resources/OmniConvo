@@ -27,9 +27,12 @@ jobs:
           rsync -avz --delete \
             --exclude 'node_modules' --exclude '.git' --exclude '.env' \
             -e "ssh -i deploy_key -o StrictHostKeyChecking=no" \
-            . $USER@$HOST:~/app
+            . $USER@$HOST:~/omniapp/OmniConvo
 
-      - name: Restart OmniConvo service
+      - name: Install dependencies & Reload PM2
         run: |
-          ssh -i deploy_key -o StrictHostKeyChecking=no $USER@$HOST \
-            "sudo systemctl restart omniconvo"
+          ssh -i deploy_key -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
+            cd ~/omniapp/OmniConvo
+            npm install --production
+            pm2 reload omniconvo-ali-2 --update-env
+          EOF
