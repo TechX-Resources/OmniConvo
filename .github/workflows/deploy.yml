@@ -2,7 +2,7 @@ name: Deploy OmniConvo to EC2
 
 on:
   push:
-    branches: [main]
+    branches: [alipm2]
 
 jobs:
   deploy:
